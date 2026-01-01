@@ -220,8 +220,16 @@ class NewsAnalyzer:
             has_new_titles = bool(
                 new_titles and any(len(titles) > 0 for titles in new_titles.values())
             )
-            has_matched_news = any(stat["count"] > 0 for stat in stats)
-            return has_new_titles and has_matched_news
+            if not has_new_titles:
+                return False
+
+            # 只要新增标题中有被关键词命中的项就认为有有效内容
+            new_title_set = {t for titles in new_titles.values() for t in titles}
+            has_matched_new = any(
+                any(title in new_title_set for title in stat.get("titles", []))
+                for stat in (stats or [])
+            )
+            return has_matched_new
         elif self.report_mode == "current":
             # current模式：只要stats有内容就说明有匹配的新闻
             return any(stat["count"] > 0 for stat in stats)

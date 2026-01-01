@@ -83,7 +83,7 @@ rss:
     - id: "hacker-news"
       name: "Hacker News"
       url: "https://hnrss.org/frontpage"
-      # max_age_days: 1               # 示例：只推送1天内的文章
+      max_age_days: 1               # 示例：只推送1天内的文章
 
     - id: "ruanyifeng"
       name: "阮一峰的网络日志"
@@ -263,9 +263,9 @@ advanced:
   # 排序权重（用于重新排序不同平台的热搜）
   # 合起来等于 1
   weight:
-    rank: 0.6                         # 排名权重
+    rank: 0.4                         # 排名权重
     frequency: 0.3                    # 频次权重
-    hotness: 0.1                      # 热度权重
+    hotness: 0.3                      # 热度权重
 
   # 多账号限制
   max_accounts_per_channel: 3         # 每个渠道最大账号数量

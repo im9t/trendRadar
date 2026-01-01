@@ -772,12 +772,6 @@ class RemoteStorageBackend(StorageBackend):
                     if first_time < current_time:
                         historical_titles[source_id].add(item.title)
 
-            # 检查是否有历史数据
-            has_historical_data = any(len(titles) > 0 for titles in historical_titles.values())
-            if not has_historical_data:
-                # 第一次抓取，没有"新增"概念
-                return {}
-
             new_titles = {}
             for source_id, news_list in current_data.items.items():
                 hist_set = historical_titles.get(source_id, set())
@@ -1342,12 +1336,6 @@ class RemoteStorageBackend(StorageBackend):
                     if first_time < current_time:
                         if item.url:
                             historical_urls[feed_id].add(item.url)
-
-            # 检查是否有历史数据
-            has_historical_data = any(len(urls) > 0 for urls in historical_urls.values())
-            if not has_historical_data:
-                # 第一次抓取，没有"新增"概念
-                return {}
 
             # 检测新增
             new_items: Dict[str, List[RSSItem]] = {}

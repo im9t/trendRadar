@@ -202,8 +202,8 @@ def detect_latest_new_titles_from_storage(
         # 获取所有历史数据
         all_data = storage_manager.get_today_all_data()
         if not all_data or not all_data.items:
-            # 没有历史数据（第一次抓取），不应该有"新增"标题
-            return {}
+            # 没有历史数据（第一次抓取），将最新批次全部视为新增标题
+            return latest_titles
 
         # 获取最新批次时间
         latest_time = latest_data.crawl_time
@@ -237,10 +237,12 @@ def detect_latest_new_titles_from_storage(
                     historical_titles[source_id].add(item.title)
 
         # 检查是否是当天第一次抓取（没有任何历史标题）
-        # 如果所有平台的历史标题集合都为空，说明只有一个抓取批次，不应该有"新增"标题
+        # 如果所有平台的历史标题集合都为空，说明只有一个抓取批次，
+        # 或者历史数据没有任何标题，此时将最新批次全部视为新增标题
         has_historical_data = any(len(titles) > 0 for titles in historical_titles.values())
         if not has_historical_data:
-            return {}
+            # 没有历史标题，将最新批次全部视为新增
+            return latest_titles
 
         # 步骤3：找出新增标题 = 最新批次标题 - 历史标题
         new_titles = {}
